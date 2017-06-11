@@ -15,7 +15,7 @@ import { HomeFragment } from './client/home/Home';
 export default class Index extends Component {
   static defaultProps = {
     selectedColor: 'rgb(247, 128, 90)',
-    normalColor: '#a9a9a9'
+    normalColor: '#000000'
   };
 
   constructor(props){
