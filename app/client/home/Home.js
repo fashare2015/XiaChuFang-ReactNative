@@ -11,7 +11,12 @@ import {
   ListView
 } from 'react-native';
 
-import Swiper from 'react-native-swiper'
+import Swiper from 'react-native-swiper';
+import {
+  SwRefreshListView,
+  RefreshStatus, //刷新状态 用于自定义
+  LoadMoreStatus //上拉加载状态 用于自定义
+} from 'react-native-swRefresh'
 
 import { Home } from '../../server/Home';
 import { HomeTitleBar } from './HomeTitleBar';
@@ -30,15 +35,22 @@ var bannerImages = [
 export class HomeFragment extends Component {
   constructor(props) {
     super(props);
-    var ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
+    this.ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
+    this.issues = [];
 
     this.state = {
       banners: [],
-      homeIssueList: ds.cloneWithRows([])
+      homeIssueList: this.ds.cloneWithRows(this.issues)
     };
 
-    Home.getHomeIssues(new Date().getTime(), 156310000000000, issues => {
-      this.setState({ homeIssueList: ds.cloneWithRows(issues[0].items)});
+    this._loadData();
+  }
+
+  _loadData() {
+    Home.getHomeIssues(parseInt(new Date().getTime()/1000), 156310000000000, issues => {
+      this.setState({ homeIssueList: this.ds.cloneWithRows(this.issues = issues[0].items)});
+      this.refs.listView.resetStatus();
+      this.refs.listView.endRefresh();
     });
   }
 
@@ -55,45 +67,62 @@ export class HomeFragment extends Component {
           {/*})}*/}
         {/*</Swiper>*/}
 
-        <ListView
+        <SwRefreshListView
+          ref="listView"
           dataSource={this.state.homeIssueList}
-          renderRow={(item) => {
-            const imgUrl = item.contents.image? item.contents.image.url: null;
-
-            switch(item.template){
-              case 6:
-                return <View style={styles.itemType6}>
-                  <Image style={{width: 330, height: 460, padding: 20}} resizeMode={'contain'}
-                         source={imgUrl? {uri: imgUrl}: require('../../res/drawable/banner1.jpg')}/>
-                </View>;
-
-              case 1:
-                return <View style={styles.itemType1}>
-                  <Image style={{height: 180, paddingBottom: 20}} source={imgUrl? {uri: imgUrl}: require('../../res/drawable/banner1.jpg')}/>
-                  <Text style={styles.title}>{item.contents.title}</Text>
-                  <Text style={styles.desc}>{item.contents.desc}</Text>
-                </View>;
-
-              case 9:
-                return <View style={styles.itemType9}>
-                  <Text style={styles.title}>{item.contents.title}</Text>
-
-                  { item.contents.show_hottest_discussion?
-                      <View>
-                        <Text style={styles.desc}>{item.contents.hottest_discussion.text}</Text>
-                        <Text style={styles.desc}>{item.contents.hottest_discussion.author_name + ' . ' + item.contents.hottest_discussion.n_diggs + "赞"}</Text>
-                      </View>
-                    :
-                      <Text style={styles.desc}>{item.contents.n_discussions + '个回答'}</Text>}
-                </View>;
-
-              default:
-                return <View/>;
-            }
-          }}
+          renderRow={this._renderRow.bind(this)}
+          onRefresh={this._onRefresh.bind(this)}
+          onLoadMore={this._onLoadMore.bind(this)}
         />
       </View>
     );
+  }
+
+  _renderRow(item){
+    const imgUrl = item.contents.image? item.contents.image.url: null;
+
+    switch(item.template){
+      case 6:
+        return <View style={styles.itemType6}>
+          <Image style={{width: 330, height: 460, margin: 10}} resizeMode={'contain'}
+                 source={imgUrl? {uri: imgUrl}: require('../../res/drawable/banner1.jpg')}/>
+        </View>;
+
+      case 1:
+        return <View style={styles.itemType1}>
+          <Image style={{height: 180, marginBottom: 20}} source={imgUrl? {uri: imgUrl}: require('../../res/drawable/banner1.jpg')}/>
+          <Text style={styles.title}>{item.contents.title}</Text>
+          <Text style={styles.desc}>{item.contents.desc}</Text>
+        </View>;
+
+      case 9:
+        return <View style={styles.itemType9}>
+          <Text style={styles.title}>{item.contents.title}</Text>
+
+          { item.contents.show_hottest_discussion?
+            <View>
+              <Text style={styles.desc}>{item.contents.hottest_discussion.text}</Text>
+              <Text style={styles.desc}>{item.contents.hottest_discussion.author_name + ' . ' + item.contents.hottest_discussion.n_diggs + "赞"}</Text>
+            </View>
+            :
+            <Text style={styles.desc}>{item.contents.n_discussions + '个回答'}</Text>}
+        </View>;
+
+      default:
+        return <View/>;
+    }
+  }
+
+  _onRefresh(end){
+    this._loadData();
+  }
+
+  _onLoadMore(end){
+    Home.getHomeIssuesMore(parseInt(new Date().getTime()/1000), 156310000000000, issues => {
+      this.issues = this.issues.concat(issues[0].items);
+      this.setState({ homeIssueList: this.ds.cloneWithRows(this.issues)});
+      this.refs.listView.endRefresh(false);
+    });
   }
 }
 
