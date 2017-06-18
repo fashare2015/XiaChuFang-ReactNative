@@ -8,12 +8,13 @@ import {
   Text,
   Image,
   View,
-  FlatList
+  FlatList, TouchableNativeFeedback
 } from 'react-native';
 
 import { HomeApi } from '../../server/Home';
 import { HomeTitleBar } from './HomeTitleBar';
 import { HomeHeader } from './HomeHeader';
+import {WebScreen} from "../web/WebScreen";
 
 var bannerImages = [
   'https://images.unsplash.com/photo-1441742917377-57f78ee0e582?h=1024',
@@ -46,12 +47,12 @@ export class HomeFragment extends Component {
   render(){
     return (
       <View>
-        <HomeTitleBar/>
+        <HomeTitleBar navigator={this.props.navigator}/>
 
         <FlatList
           data={this.state.homeIssueList}
-          renderItem={this._renderRow}
-          ListHeaderComponent={() => <HomeHeader/>}
+          renderItem={this._renderRow.bind(this)}
+          ListHeaderComponent={() => <HomeHeader navigator={this.props.navigator}/>}
           // onRefresh={this._onRefresh.bind(this)}
         />
 
@@ -61,37 +62,52 @@ export class HomeFragment extends Component {
 
   _renderRow({item}){
     const imgUrl = item.contents.image? item.contents.image.url: null;
+    const href = item.url;
 
     switch(item.template){
       case 6:
-        return <View style={styles.itemType6}>
-          <Image style={{width: 330, height: 460, margin: 10}} resizeMode={'contain'}
-                 source={imgUrl? {uri: imgUrl}: require('../../res/drawable/banner1.jpg')}/>
-        </View>;
+        return <TouchableNativeFeedback onPress={() => this._navWeb(href)}>
+          <View style={styles.itemType6}>
+            <Image style={{width: 330, height: 460, margin: 10}} resizeMode={'contain'}
+                   source={imgUrl? {uri: imgUrl}: require('../../res/drawable/banner1.jpg')}/>
+          </View>
+        </TouchableNativeFeedback>;
 
       case 1:
-        return <View style={styles.itemType1}>
-          <Image style={{height: 180, marginBottom: 20}} source={imgUrl? {uri: imgUrl}: require('../../res/drawable/banner1.jpg')}/>
-          <Text style={styles.title}>{item.contents.title}</Text>
-          <Text style={styles.desc}>{item.contents.desc}</Text>
-        </View>;
+        return <TouchableNativeFeedback onPress={() => this._navWeb(href)}>
+          <View style={styles.itemType1}>
+            <Image style={{height: 180, marginBottom: 20}} source={imgUrl? {uri: imgUrl}: require('../../res/drawable/banner1.jpg')}/>
+            <Text style={styles.title}>{item.contents.title}</Text>
+            <Text style={styles.desc}>{item.contents.desc}</Text>
+          </View>
+        </TouchableNativeFeedback>;
 
       case 9:
-        return <View style={styles.itemType9}>
-          <Text style={styles.title}>{item.contents.title}</Text>
+        return <TouchableNativeFeedback onPress={() => this._navWeb(href)}>
+          <View style={styles.itemType9}>
+            <Text style={styles.title}>{item.contents.title}</Text>
 
-          { item.contents.show_hottest_discussion?
-            <View>
-              <Text style={styles.desc}>{item.contents.hottest_discussion.text}</Text>
-              <Text style={styles.desc}>{item.contents.hottest_discussion.author_name + ' . ' + item.contents.hottest_discussion.n_diggs + "赞"}</Text>
-            </View>
-            :
-            <Text style={styles.desc}>{item.contents.n_discussions + '个回答'}</Text>}
-        </View>;
+            { item.contents.show_hottest_discussion?
+              <View>
+                <Text style={styles.desc}>{item.contents.hottest_discussion.text}</Text>
+                <Text style={styles.desc}>{item.contents.hottest_discussion.author_name + ' . ' + item.contents.hottest_discussion.n_diggs + "赞"}</Text>
+              </View>
+              :
+              <Text style={styles.desc}>{item.contents.n_discussions + '个回答'}</Text>}
+          </View>
+        </TouchableNativeFeedback>;
 
       default:
         return <View/>;
     }
+  }
+
+  _navWeb(url){
+    console.log(url);
+    this.props.navigator.push({
+      component: WebScreen,
+      args:{ url: url }
+    });
   }
 }
 

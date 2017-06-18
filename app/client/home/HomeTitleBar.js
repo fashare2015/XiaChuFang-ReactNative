@@ -5,7 +5,7 @@ import React, { Component } from 'react';
 import {
   StyleSheet,
   Text,
-  Image
+  Image, TouchableNativeFeedback
 } from 'react-native';
 
 import {TitleBar} from "../widget/TitleBar";
@@ -14,9 +14,12 @@ export class HomeTitleBar extends Component {
   render(){
     return (
       <TitleBar
-        leftView={() => <Image
+        leftView={() => <TouchableNativeFeedback
+            onPress={() => {}}>
+          <Image
           style={{height: 21, width: 21}}
-          source={require('../../res/drawable/global/add.png')}/>}
+          source={require('../../res/drawable/global/add.png')}/>
+        </TouchableNativeFeedback>}
         centerView={() => <Text>center</Text>}
         rightView={() => <Image
           style={{height: 24, width: 24}}

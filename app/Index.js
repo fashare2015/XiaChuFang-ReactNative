@@ -11,6 +11,7 @@ import {
 import TabNavigator from 'react-native-tab-navigator';
 
 import { HomeFragment } from './client/home/Home';
+import { WebScreen } from "./client/web/WebScreen";
 
 export default class Index extends Component {
   static defaultProps = {
@@ -22,8 +23,8 @@ export default class Index extends Component {
     super(props);
     this.state = {
       tabList:[
-        { title: '下厨房', fragment: <HomeFragment/>, iconNormal: require('./res/drawable/tab/xiachufang.png'), iconSelected: require('./res/drawable/tab/xiachufang_selected.png')},
-        { title: '市集', fragment: <Text>aaa</Text>, iconNormal: require('./res/drawable/tab/makert.png'), iconSelected: require('./res/drawable/tab/makert_selected.png')},
+        { title: '下厨房', fragment: <HomeFragment navigator={this.props.navigator}/>, iconNormal: require('./res/drawable/tab/xiachufang.png'), iconSelected: require('./res/drawable/tab/xiachufang_selected.png')},
+        { title: '市集', fragment: <WebScreen/>, iconNormal: require('./res/drawable/tab/makert.png'), iconSelected: require('./res/drawable/tab/makert_selected.png')},
         { title: '收藏', fragment: <Text>bbb</Text>, iconNormal: require('./res/drawable/tab/fav.png'), iconSelected: require('./res/drawable/tab/fav_selected.png')},
         { title: '信箱', fragment: <Text>ccc</Text>, iconNormal: require('./res/drawable/tab/community.png'), iconSelected: require('./res/drawable/tab/community_selected.png')},
         { title: '我', fragment: <Text>ddd</Text>, iconNormal: require('./res/drawable/tab/self.png'), iconSelected: require('./res/drawable/tab/self_selected.png')},

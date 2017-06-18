@@ -10,11 +10,15 @@ import {
 } from 'react-native';
 
 import Index from './app/Index';
+import {Navigator} from "react-native-deprecated-custom-components";
 
-export default class react_native_xia_chu_fang extends Component {
-  render() {
-    return (<Index/>);
+export class Navigation extends Component{
+  render(){
+    return(
+      <Navigator initialRoute={{component: Index}}
+        renderScene={(route, navigator) => <route.component navigator={navigator} {...route.args}/> }/>
+    );
   }
 }
 
-AppRegistry.registerComponent('react_native_xia_chu_fang', () => react_native_xia_chu_fang);
+AppRegistry.registerComponent('react_native_xia_chu_fang', () => Navigation);
