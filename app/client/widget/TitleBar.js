@@ -22,9 +22,9 @@ export class TitleBar extends Component {
 
 const styles = StyleSheet.create({
   titleBar: {
-    flex: 1,
+    // flex: 1,
     flexDirection: 'row',
-    height: 55
+    height: 55,
   },
 
   leftContainer:{

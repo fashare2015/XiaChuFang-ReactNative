@@ -35,21 +35,19 @@ export default class Index extends Component {
   render(){
     return (
       <TabNavigator>
-        {this.state.tabList.map((item, key) => {
-          return (
-            <TabNavigator.Item
-              key={key}
-              title={item.title}
-              titleStyle={{color: this.props.normalColor}}
-              selectedTitleStyle={{color: this.props.selectedColor}}
-              renderIcon={() => <Image style={styles.tabIcon} source={item.iconNormal} resizeMode={'contain'}/>}
-              renderSelectedIcon={() => <Image style={styles.tabIcon} source={item.iconSelected} resizeMode={'contain'}/>}
-              onPress={() => this.setState({ selectedTab: item.title })}
-              selected={this.state.selectedTab === item.title}>
-              { item.fragment }
-            </TabNavigator.Item>
-          );
-        })}
+        {this.state.tabList.map((item, key) =>
+          <TabNavigator.Item
+            key={key}
+            title={item.title}
+            titleStyle={{color: this.props.normalColor}}
+            selectedTitleStyle={{color: this.props.selectedColor}}
+            renderIcon={() => <Image style={styles.tabIcon} source={item.iconNormal} resizeMode={'contain'}/>}
+            renderSelectedIcon={() => <Image style={styles.tabIcon} source={item.iconSelected} resizeMode={'contain'}/>}
+            onPress={() => this.setState({ selectedTab: item.title })}
+            selected={this.state.selectedTab === item.title}>
+            { item.fragment }
+          </TabNavigator.Item>
+        )}
       </TabNavigator>
     );
   }

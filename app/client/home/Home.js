@@ -8,18 +8,12 @@ import {
   Text,
   Image,
   View,
-  ListView
+  FlatList
 } from 'react-native';
 
-import Swiper from 'react-native-swiper';
-import {
-  SwRefreshListView,
-  RefreshStatus, //刷新状态 用于自定义
-  LoadMoreStatus //上拉加载状态 用于自定义
-} from 'react-native-swRefresh'
-
-import { Home } from '../../server/Home';
+import { HomeApi } from '../../server/Home';
 import { HomeTitleBar } from './HomeTitleBar';
+import { HomeHeader } from './HomeHeader';
 
 var bannerImages = [
   'https://images.unsplash.com/photo-1441742917377-57f78ee0e582?h=1024',
@@ -35,22 +29,17 @@ var bannerImages = [
 export class HomeFragment extends Component {
   constructor(props) {
     super(props);
-    this.ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
-    this.issues = [];
 
     this.state = {
-      banners: [],
-      homeIssueList: this.ds.cloneWithRows(this.issues)
+      homeIssueList: []
     };
 
     this._loadData();
   }
 
   _loadData() {
-    Home.getHomeIssues(parseInt(new Date().getTime()/1000), 156310000000000, issues => {
-      this.setState({ homeIssueList: this.ds.cloneWithRows(this.issues = issues[0].items)});
-      this.refs.listView.resetStatus();
-      this.refs.listView.endRefresh();
+    HomeApi.getHomeIssues(issues => {
+      this.setState({ homeIssueList: issues[0].items});
     });
   }
 
@@ -59,26 +48,18 @@ export class HomeFragment extends Component {
       <View>
         <HomeTitleBar/>
 
-        {/*<Swiper style={styles.swiper}>*/}
-          {/*{this.state.banners.map((item, key) => {*/}
-            {/*return (*/}
-              {/*<Image style={styles.page} key={key} source={item? {uri: item}: require('../../res/drawable/banner1.jpg')}/>*/}
-            {/*)*/}
-          {/*})}*/}
-        {/*</Swiper>*/}
-
-        <SwRefreshListView
-          ref="listView"
-          dataSource={this.state.homeIssueList}
-          renderRow={this._renderRow.bind(this)}
-          onRefresh={this._onRefresh.bind(this)}
-          onLoadMore={this._onLoadMore.bind(this)}
+        <FlatList
+          data={this.state.homeIssueList}
+          renderItem={this._renderRow}
+          ListHeaderComponent={() => <HomeHeader/>}
+          // onRefresh={this._onRefresh.bind(this)}
         />
+
       </View>
     );
   }
 
-  _renderRow(item){
+  _renderRow({item}){
     const imgUrl = item.contents.image? item.contents.image.url: null;
 
     switch(item.template){
@@ -111,18 +92,6 @@ export class HomeFragment extends Component {
       default:
         return <View/>;
     }
-  }
-
-  _onRefresh(end){
-    this._loadData();
-  }
-
-  _onLoadMore(end){
-    Home.getHomeIssuesMore(parseInt(new Date().getTime()/1000), 156310000000000, issues => {
-      this.issues = this.issues.concat(issues[0].items);
-      this.setState({ homeIssueList: this.ds.cloneWithRows(this.issues)});
-      this.refs.listView.endRefresh(false);
-    });
   }
 }
 
