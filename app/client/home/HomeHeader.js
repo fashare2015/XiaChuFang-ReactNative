@@ -26,7 +26,9 @@ export class HomeHeader extends Component {
       meals: [],    // 三餐
       ads: [],      // 广告
     };
+  }
 
+  componentDidMount(){
     this._loadData();
   }
 
@@ -70,7 +72,7 @@ export class HomeHeader extends Component {
         <ViewPagerAndroid
           style={styles.ad}
           initialPage={0}>{this.state.meals.map((item, index) =>
-          <TouchableNativeFeedback key={index} onPress={() => this._navWeb(href)}>
+          <View key={index}><TouchableNativeFeedback onPress={() => this._navWeb(href)}>
             <View
               style={{height: 100, flexDirection: 'row', paddingLeft: 20, paddingRight: 20,
                 justifyContent: 'space-between', alignItems: 'center'}}>
@@ -83,7 +85,7 @@ export class HomeHeader extends Component {
                 style={{width: 60, height: 60, borderRadius: 2}}
                 source={{uri: item.dishes.dishes[0].thumbnail_280}}/>
             </View>
-          </TouchableNativeFeedback>
+          </TouchableNativeFeedback></View>
         )}</ViewPagerAndroid>
 
         {/*广告*/}
