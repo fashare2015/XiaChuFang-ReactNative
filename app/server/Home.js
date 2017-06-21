@@ -1,5 +1,8 @@
 import { Api } from './Api'
 
+/**
+ * 首页
+ */
 export class HomeApi {
 
   /**

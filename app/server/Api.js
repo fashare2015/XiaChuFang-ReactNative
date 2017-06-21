@@ -21,4 +21,6 @@ export class Api {
   // 首页其余的 header：{烘焙，问答， 排行， 分类}，三餐
   static HOME_HEADERS = Api._BASE_URL + "v2/init_page_v5.json?webp=1&sk=AUY8DwVAQjKhaQ7pdAiKvg&_ts=1497794937&location_code=156310000000000&version=234&origin=android&api_key=09844205d1de8adc26110817477a2b70&api_sign=7eabc62a10983493136f22a6f6adeab4&timezone=Asia%2FShanghai&nonce=BCB4A2C4-9407-41AB-8276-547DEDEC09DB&";
 
+  // 收藏-浏览历史
+  static COLLECT_HISTORY = Api._BASE_URL + "v2/recipes/advanced_lookup.json";
 }

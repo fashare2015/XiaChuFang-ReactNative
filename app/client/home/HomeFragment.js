@@ -1,5 +1,6 @@
 /**
  * Created by apple on 17-6-8.
+ * 首页 - 下厨房
  */
 import React, { Component } from 'react';
 
@@ -21,6 +22,7 @@ export class HomeFragment extends Component {
     super(props);
 
     this.state = {
+      isRefreshing: false,
       homeIssueList: []
     };
 
@@ -31,8 +33,12 @@ export class HomeFragment extends Component {
   }
 
   _loadData() {
+    this.setState({isRefreshing: true});
     HomeApi.getHomeIssues(issues => {
-      this.setState({ homeIssueList: issues[0].items});
+      this.setState({
+        homeIssueList: issues[0].items,
+        isRefreshing: false
+      });
     });
   }
 
@@ -46,7 +52,8 @@ export class HomeFragment extends Component {
           keyExtractor={ (item, index) => index }
           renderItem={this._renderRow.bind(this)}
           ListHeaderComponent={() => <HomeHeader navigator={this.props.navigator}/>}
-          // onRefresh={this._onRefresh.bind(this)}
+          onRefresh={() => this._loadData()}
+          refreshing={this.state.isRefreshing}
         />
 
       </View>
@@ -79,8 +86,8 @@ export class HomeFragment extends Component {
         return <TouchableNativeFeedback onPress={() => this._navWeb(href)}>
           <View style={styles.itemType2}>
             <Image style={{height: 180, justifyContent: 'center', alignItems: 'center'}} source={imgUrl? {uri: imgUrl}: require('../../res/drawable/banner1.jpg')}>
-              <Text style={styles.title}>{item.contents.title_1st}</Text>
-              <Text style={styles.desc}>{item.contents.title_2nd}</Text>
+              <Text style={{fontSize: 20, color: 'white', padding: 20}}>{item.contents.title_1st}</Text>
+              <Text style={{color: 'white', paddingTop: 10}}>{item.contents.title_2nd}</Text>
             </Image>
           </View>
         </TouchableNativeFeedback>;
@@ -118,7 +125,7 @@ export class HomeFragment extends Component {
 
             { item.contents.show_hottest_discussion?
               <View>
-                <Text style={styles.desc}>{item.contents.hottest_discussion.text}</Text>
+                <Text style={styles.desc} numberOfLines={3} ellipsizeMode="tail">{item.contents.hottest_discussion.text}</Text>
                 <Text style={styles.desc}>{item.contents.hottest_discussion.author_name + ' · ' + item.contents.hottest_discussion.n_diggs + "赞"}</Text>
               </View>
               :
@@ -186,6 +193,7 @@ const styles = StyleSheet.create({
 
   title: {
     fontSize: 18,
+    color: 'black'
   },
 
   desc: {

@@ -8,16 +8,15 @@ import {
   WebView
 } from 'react-native';
 import BaseComponent from "../base/BaseComponent";
-import {HomeTitleBar} from "../home/HomeTitleBar";
 import {BackTitleBar} from "../widget/TitleBar";
 import {ImageButton} from "../widget/ImageButton";
-import {TitleBar} from "../widget/TitleBar";
 
 export class WebScreen extends BaseComponent {
   static DEFAULT_URL = "http://www.baidu.com";
 
   constructor(props){
     super(props);
+    this.webTitleBar = null;
     this.state = {
       url: WebScreen.DEFAULT_URL
     };
@@ -25,7 +24,6 @@ export class WebScreen extends BaseComponent {
 
   componentDidMount(){
     super.componentDidMount();
-    this.webTitleBar = null;
     this.setState({
       url: this.props.url? this.props.url: WebScreen.DEFAULT_URL
     });
