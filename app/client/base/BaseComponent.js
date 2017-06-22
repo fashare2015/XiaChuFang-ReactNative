@@ -18,8 +18,11 @@ export default class BaseComponent extends Component{
     BackHandler.removeEventListener('hardwareBackPress', this.handleBack);
   }
 
-  _handleBack() {
+  _handleBack(data) {
     console.log("_handleBack");
+    if(data)
+      this._navPopCallback(data);
+
     const navigator = this.props.navigator;
     if (navigator && navigator.getCurrentRoutes().length > 1) {
       console.log("go back");
@@ -28,5 +31,11 @@ export default class BaseComponent extends Component{
     }
     console.log("close");
     return false;
+  }
+
+  _navPopCallback(data){
+    if(this.props.onNavPop) {
+      this.props.onNavPop(data);
+    }
   }
 }

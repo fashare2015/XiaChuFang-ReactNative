@@ -11,7 +11,7 @@ export class UsertApi {
    * @param onSussess
    * @param onFail
    */
-  static login(onSussess, onFail){
+  static login(userName, passWord, onSussess, onFail){
     fetch(Api.USER_LOGIN, {
       method: 'POST',
       headers: {
@@ -28,13 +28,13 @@ export class UsertApi {
 
       body: Utils._appendFormData({
         'webp':	1,
-        'password':	'qwe13579',
+        'password':	passWord,
         'country_code': 86,
         'pic_size': 160,
         '_ts':	1498106907,
         'location_code':	156310000000000,
         'version':	'234',
-        'mail': '18818276018',
+        'mail': userName,
         'origin':	'android',
         'api_key':	'09844205d1de8adc26110817477a2b70',
         'api_sign': 'a6636472c5b39904d80650ab0ab2b57c',
@@ -44,7 +44,10 @@ export class UsertApi {
       .then(response => response.json())
       .then(responseData => {
         console.log(responseData);
-        onSussess(responseData);
+        if(responseData.status === 'ok')
+          onSussess(responseData.content);
+        else
+          onFail(responseData.code, responseData.msg);
       }).done();
   }
 }
