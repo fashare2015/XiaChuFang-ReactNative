@@ -13,6 +13,7 @@ import TabNavigator from 'react-native-tab-navigator';
 import { HomeFragment } from './client/home/HomeFragment';
 import {MarketFragment} from "./client/market/MarketFragment";
 import {CollectFragment} from "./client/collect/CollectFragment";
+import {MineFragment} from "./client/mine/MineFragment";
 
 export default class Index extends Component {
   static defaultProps = {
@@ -28,7 +29,7 @@ export default class Index extends Component {
         { title: '市集', fragment: <MarketFragment navigator={this.props.navigator}/>, iconNormal: require('./res/drawable/tab/makert.png'), iconSelected: require('./res/drawable/tab/makert_selected.png')},
         { title: '收藏', fragment: <CollectFragment navigator={this.props.navigator}/>, iconNormal: require('./res/drawable/tab/fav.png'), iconSelected: require('./res/drawable/tab/fav_selected.png')},
         { title: '信箱', fragment: <Text>ccc</Text>, iconNormal: require('./res/drawable/tab/community.png'), iconSelected: require('./res/drawable/tab/community_selected.png')},
-        { title: '我', fragment: <Text>ddd</Text>, iconNormal: require('./res/drawable/tab/self.png'), iconSelected: require('./res/drawable/tab/self_selected.png')},
+        { title: '我', fragment: <MineFragment navigator={this.props.navigator}/>, iconNormal: require('./res/drawable/tab/self.png'), iconSelected: require('./res/drawable/tab/self_selected.png')},
       ],
       selectedTab: '下厨房'
     };
