@@ -10,10 +10,15 @@ import {
   Text,
   Image,
   View,
-  FlatList, TouchableNativeFeedback
+  ListView,
+  FlatList, TouchableNativeFeedback, ScrollView
 } from 'react-native';
+
+import ScrollableTabView, {DefaultTabBar} from 'react-native-scrollable-tab-view';
 import {CollectTitleBar} from "./CollectTitleBar";
 import {CollectApi} from "../../server/Collect";
+
+import Color from '../../res/values/colors/color';
 
 
 export class CollectFragment extends Component {
@@ -21,8 +26,8 @@ export class CollectFragment extends Component {
     super(props);
 
     this.state = {
+      data: [],
       isRefreshing: false,
-      data: []
     };
 
   }
@@ -43,17 +48,30 @@ export class CollectFragment extends Component {
 
   render(){
     return (
-      <View>
+
+      <View style={{flex: 1}}>
+        {/* 需要设 flex !!! */}
         <CollectTitleBar navigator={this.props.navigator}/>
 
-        <FlatList
-          data={this.state.data}
-          keyExtractor={ (item, index) => index }
-          renderItem={this._renderRow.bind(this)}
-          //ListHeaderComponent={() => <HomeHeader navigator={this.props.navigator}/>}
-          onRefresh={() => this._loadData()}
-          refreshing={this.state.isRefreshing}
-        />
+        <ScrollableTabView
+          renderTabBar={() => <DefaultTabBar />}
+          tabBarActiveTextColor={Color.colorPrimary}
+          tabBarInactiveTextColor={'black'}
+          tabBarUnderlineStyle={{backgroundColor: Color.colorPrimary}}>
+          <Text tabLabel="菜谱"></Text>
+          <Text tabLabel="菜单">bbb</Text>
+
+          <FlatList
+            tabLabel="浏览历史"
+            data={this.state.data}
+            keyExtractor={ (item, index) => index }
+            renderItem={this._renderRow.bind(this)}
+            //ListHeaderComponent={() => <HomeHeader navigator={this.props.navigator}/>}
+            onRefresh={() => this._loadData()}
+            refreshing={this.state.isRefreshing}
+          />
+
+        </ScrollableTabView>
 
       </View>
     );

@@ -15,9 +15,11 @@ import {MarketFragment} from "./client/market/MarketFragment";
 import {CollectFragment} from "./client/collect/CollectFragment";
 import {MineFragment} from "./client/mine/MineFragment";
 
+import Color from './res/values/colors/color';
+
 export default class Index extends Component {
   static defaultProps = {
-    selectedColor: 'rgb(247, 128, 90)',
+    selectedColor: Color.colorPrimary,
     normalColor: '#000000'
   };
 

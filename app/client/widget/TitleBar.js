@@ -11,7 +11,7 @@ import BaseComponent from "../base/BaseComponent";
 import {ImageButton} from "./ImageButton";
 
 export class TitleBar extends Component {
-  static propTypes = {
+  propTypes = {
     leftView: PropTypes.func,
     centerView: PropTypes.func,
     rightView: PropTypes.func
@@ -21,7 +21,11 @@ export class TitleBar extends Component {
     return (
       <View style={styles.titleBar}>
         <View style={styles.leftContainer}>{this.props.leftView? this.props.leftView(): null}</View>
-        <View style={styles.centerContainer}>{this.props.centerView? this.props.centerView(): null}</View>
+        {/*<View style={styles.centerContainer}>{this.props.centerView? this.props.centerView(): null}</View>*/}
+        <View style={styles.centerContainer}>
+          {this.props.centerView? this.props.centerView(): null}
+          <View style={{width:0}}/>{/*TODO: 临时解决子View {flex:1} 无法占满父容器*/}
+        </View>
         <View style={styles.rightContainer}>{this.props.rightView? this.props.rightView(): null}</View>
       </View>
     );
@@ -66,7 +70,8 @@ const styles = StyleSheet.create({
   centerContainer:{
     justifyContent: 'center',
     alignItems: 'center',
-    flexGrow: 1
+    flexDirection: 'row',
+    flex: 1
   },
 
   rightContainer:{

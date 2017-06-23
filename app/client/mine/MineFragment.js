@@ -17,6 +17,10 @@ import {MineTitleBar} from "./MineTitleBar";
 import { LoginScreen } from "../login/LoginScreen"
 import Toast from 'react-native-root-toast';
 
+import ScrollableTabView, {DefaultTabBar} from 'react-native-scrollable-tab-view';
+
+import Color from '../../res/values/colors/color';
+
 
 export class MineFragment extends Component {
   static DEFAULT_USER = JSON.parse('{\
@@ -52,7 +56,7 @@ export class MineFragment extends Component {
     super(props);
 
     this.state = {
-      user: MineFragment.DEFAULT_USER,
+      user: null,
       isRefreshing: false,
       data: []
     };
@@ -122,6 +126,17 @@ export class MineFragment extends Component {
 
         </View>
       </View>
+
+      {/*tab页*/}
+      <ScrollableTabView
+        renderTabBar={() => <DefaultTabBar />}
+        tabBarActiveTextColor={Color.colorPrimary}
+        tabBarInactiveTextColor={'black'}
+        tabBarUnderlineStyle={{backgroundColor: Color.colorPrimary}}>
+        <Text tabLabel="菜谱">a</Text>
+        <Text tabLabel="作品">b</Text>
+
+      </ScrollableTabView>
 
     </View>;
   }

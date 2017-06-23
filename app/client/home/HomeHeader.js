@@ -56,11 +56,10 @@ export class HomeHeader extends Component {
         )}</View>
 
         {/*流行*/}
-        <View style={{flexDirection: 'row', paddingLeft: 20, paddingRight: 20}}>{this.popularList.map((item, index) =>
-          // TODO: 替换 width: 155 为 flexGrow
+        <View style={{flex: 1, flexDirection: 'row', paddingLeft: 20, paddingRight: 20}}>{this.popularList.map((item, index) =>
           <TouchableNativeFeedback key={index} onPress={() => this._navWeb(href)}>
             <Image
-              style={{width: 155, height: 100, marginLeft:index===0? 0: 10,
+              style={{flex: 1, width: 155, height: 100, marginLeft:index===0? 0: 10,
                 justifyContent: 'flex-end', alignItems: 'center', paddingBottom:15}}
               source={item.bg}>
               <Text style={{color: '#FFFFFF'}}>{item.title}</Text>
