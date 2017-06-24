@@ -11,7 +11,7 @@ import BaseComponent from "../base/BaseComponent";
 import {ImageButton} from "./ImageButton";
 
 export class TitleBar extends Component {
-  propTypes = {
+  static propTypes = {
     leftView: PropTypes.func,
     centerView: PropTypes.func,
     rightView: PropTypes.func

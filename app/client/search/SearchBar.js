@@ -7,23 +7,22 @@ import {
   Text,
   View,
   Image,
-  TextInput
+  TextInput, TouchableNativeFeedback
 } from 'react-native';
 
 export class SearchBar extends Component {
-  propTypes = {
+  static propTypes = {
     inputable: PropTypes.bool,
     //searchIcon,
     hintText: PropTypes.string,
+    navTo: PropTypes.element
   };
 
-  getDefaultProps() {
-    return {
-      inputable: false,
-      //searchIcon: require('../../res/drawable/global/add.png'),
-      hintText: "",
-    };
-  }
+  static defaultProps = {
+    inputable: false,
+    //searchIcon: require('../../res/drawable/global/add.png'),
+    hintText: "",
+  };
 
   constructor(props) {
     super(props);
@@ -36,13 +35,15 @@ export class SearchBar extends Component {
   render(){
     return (
       !this.props.inputable?
-        <View style={styles.rootUnInputable}>
-          <Image
-            style={{height: 21, width: 21}}
-            source={require('../../res/drawable/global/add.png')}/>
+        <TouchableNativeFeedback onPress={() => this.props.navTo? this.props.navigator.push({component: this.props.navTo}): {}}>
+          <View style={styles.rootUnInputable}>
+            <Image
+              style={{height: 21, width: 21}}
+              source={require('../../res/drawable/global/add.png')}/>
 
-          <Text>{this.props.hintText}</Text>
-        </View>
+            <Text style={styles.textHint}>{this.props.hintText}</Text>
+          </View>
+        </TouchableNativeFeedback>
       :
         <View style={styles.rootInputable}>
           <Image
@@ -64,22 +65,39 @@ export class SearchBar extends Component {
 const styles = StyleSheet.create({
   rootUnInputable: {
     flex: 1,
+    height: 40,
+    paddingLeft: 10,
+    paddingRight: 10,
+    borderRadius: 4,
+    backgroundColor: '#dddddd',
+
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: 'blue'
+  },
+
+  textHint: {
+    paddingLeft: 5,
+    fontSize: 17,
   },
 
   rootInputable: {
+    flex: 1,
+    height: 40,
+    paddingLeft: 10,
+    paddingRight: 10,
+    borderRadius: 4,
+    backgroundColor: '#dddddd',
+
     flexDirection: 'row',
     justifyContent: 'flex-start',
     alignItems: 'center',
-    backgroundColor: 'blue'
   },
 
   textInput: {
-    height: 55,
-    paddingLeft: 15,
-    fontSize: 15,
+    flex: 1,
+    paddingLeft: 5,
+    fontSize: 17,
+    textAlignVertical: "center"
   }
 });

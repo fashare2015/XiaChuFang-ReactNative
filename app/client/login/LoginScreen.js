@@ -66,7 +66,8 @@ export class LoginScreen extends BaseComponent {
               value={this.state.passWord}
               placeholder="登录密码"
               placeholderTextColor={'gray'}
-              underlineColorAndroid={'transparent'}/>
+              underlineColorAndroid={'transparent'}
+              secureTextEntry={true}/>
 
             <Button
               style={{height: 50, margin: 15, backgroundColor: 'rgb(247, 128, 90)', fontSize: 15, color: 'white', justifyContent:'center', textAlignVertical: "center"}}

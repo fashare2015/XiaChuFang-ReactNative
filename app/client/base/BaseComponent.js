@@ -1,5 +1,7 @@
 /**
  * Created by apple on 17-6-8.
+ *
+ * 所有界面的基类，封装了 '返回键' 功能 {@link BaseComponent#_handleBack}
  */
 import React, {Component} from 'react';
 import {BackHandler} from 'react-native';
