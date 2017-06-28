@@ -6,48 +6,19 @@
 
 import React, { Component } from 'react';
 import {
-  AppRegistry,
-  StyleSheet,
-  Text,
-  View
+  AppRegistry
 } from 'react-native';
 
-export default class react_native_xia_chu_fang extends Component {
-  render() {
-    return (
-      <View style={styles.subContainer}>
-        <Text style={styles.welcome}>
-          Welcome to React Native!
-        </Text>
-        <Text style={styles.instructions}>
-          To get started, edit index.ios.js
-        </Text>
-        <Text style={styles.instructions}>
-          Press Cmd+R to reload,{'\n'}
-          Cmd+D or shake for dev menu
-        </Text>
-      </View>
+import Index from './app/Index';
+import {Navigator} from "react-native-deprecated-custom-components";
+
+export class Navigation extends Component{
+  render(){
+    return(
+      <Navigator initialRoute={{component: Index}}
+                 renderScene={(route, navigator) => <route.component navigator={navigator} {...route.args}/> }/>
     );
   }
 }
 
-const styles = StyleSheet.create({
-  subContainer: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: '#F5FCFF',
-  },
-  welcome: {
-    fontSize: 20,
-    textAlign: 'center',
-    margin: 10,
-  },
-  instructions: {
-    textAlign: 'center',
-    color: '#333333',
-    marginBottom: 5,
-  },
-});
-
-AppRegistry.registerComponent('react_native_xia_chu_fang', () => react_native_xia_chu_fang);
+AppRegistry.registerComponent('react_native_xia_chu_fang', () => Navigation);
